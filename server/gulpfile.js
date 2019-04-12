@@ -1,8 +1,9 @@
 let gulp = require('gulp');
 let nodemon = require('gulp-nodemon');
 let livereload = require('gulp-livereload');
+let plumber = require('gulp-plumber');
 
-gulp.task('develop', () => {
+gulp.task('livereload', () => {
   livereload.listen();
   nodemon({
     script: 'bin/www',
@@ -19,4 +20,12 @@ gulp.task('develop', () => {
   });
 });
 
+gulp.task('copy', () => {
+  return gulp
+    .src('./node_modules/handlebars-idom/dist/runtime.js')
+    .pipe(plumber())
+    .pipe(gulp.dest('./public/js/vendor/'));
+});
+
+gulp.task('develop', ['copy', 'livereload']);
 gulp.task('default', ['develop']);

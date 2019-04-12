@@ -1,0 +1,11 @@
+{
+  "extends": ["eslint:recommended", "plugin:compat/recommended"],
+  "env": {
+    "browser": true
+  },
+  "rules": {
+    "no-console": "warn",
+    "no-shadow": "warn",
+    "no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }]
+  }
+}
