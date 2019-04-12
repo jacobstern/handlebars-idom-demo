@@ -1,17 +1,17 @@
-const express = require('express');
-const path = require('path');
-const favicon = require('serve-favicon');
-const logger = require('morgan');
-const cookieParser = require('cookie-parser');
-const bodyParser = require('body-parser');
-const exphbs = require('express-handlebars');
+let express = require('express');
+let path = require('path');
+// TODO: Add favicon
+// let favicon = require('serve-favicon');
+let logger = require('morgan');
+let cookieParser = require('cookie-parser');
+let bodyParser = require('body-parser');
+let exphbs = require('express-handlebars');
 
-const routes = require('./routes/index');
-const users = require('./routes/user');
+let routes = require('./routes/index');
 
-const app = express();
+let app = express();
 
-const env = process.env.NODE_ENV || 'development';
+let env = process.env.NODE_ENV || 'development';
 app.locals.ENV = env;
 app.locals.ENV_DEVELOPMENT = env == 'development';
 
@@ -39,11 +39,10 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
-app.use('/users', users);
 
 /// catch 404 and forward to error handler
 app.use((req, res, next) => {
-  const err = new Error('Not Found');
+  let err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
@@ -53,7 +52,7 @@ app.use((req, res, next) => {
 // development error handler
 // will print stacktrace
 if (app.get('env') === 'development') {
-  app.use((err, req, res, next) => {
+  app.use((err, req, res, _next) => {
     res.status(err.status || 500);
     res.render('error', {
       message: err.message,
@@ -65,7 +64,7 @@ if (app.get('env') === 'development') {
 
 // production error handler
 // no stacktraces leaked to user
-app.use((err, req, res, next) => {
+app.use((err, req, res, _next) => {
   res.status(err.status || 500);
   res.render('error', {
     message: err.message,
