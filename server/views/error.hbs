@@ -1,5 +1,6 @@
 
   {{ message }}
   {{ error.status }}
+  {{#if ENV_DEVELOPMENT}}
   {{ error.stack }}  
-
+  {{/if}}
