@@ -1,8 +1,14 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+.search-results {
+  max-width: 650px;
 }
 
-a {
-  color: #00B7FF;
+.search-form {
+  margin-bottom: 2em;
+}
+
+.search-result-description {
+  /* Truncate to two lines */
+  line-height: 1.5em;
+  height: 3em;
+  overflow: hidden;
 }

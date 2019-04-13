@@ -22,7 +22,7 @@ app.engine(
   'hbs',
   exphbs({
     defaultLayout: 'main.hbs',
-    partialsDir: ['views/partials/'],
+    extname: '.hbs',
     handlebars: HandlebarsIdom,
   })
 );

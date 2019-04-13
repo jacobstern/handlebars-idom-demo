@@ -7,7 +7,7 @@ gulp.task('livereload', () => {
   livereload.listen();
   nodemon({
     script: 'bin/www',
-    ext: 'js hbs coffee',
+    ext: 'js hbs css',
     stdout: false,
   }).on('readable', function() {
     this.stdout.on('data', chunk => {
