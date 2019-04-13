@@ -6,6 +6,7 @@ let logger = require('morgan');
 let cookieParser = require('cookie-parser');
 let bodyParser = require('body-parser');
 let exphbs = require('express-handlebars');
+let HandlebarsIdom = require('handlebars-idom');
 
 let indexRoutes = require('./routes/index');
 let searchRoutes = require('./routes/search');
@@ -23,6 +24,7 @@ app.engine(
   exphbs({
     defaultLayout: 'main.hbs',
     partialsDir: ['views/partials/'],
+    handlebars: HandlebarsIdom,
   })
 );
 app.set('views', path.join(__dirname, 'views'));
