@@ -4,27 +4,49 @@ let { fetchWikipediaSearch } = require('../../wikipedia-search');
 
 let router = express.Router();
 
+function prepareViewParams(searchContext, useViewCache, callback) {
+  expressHandlebars
+    .getPartials({ precompiled: true, cache: useViewCache })
+    .then(precompiled => {
+      let params = {
+        title: 'Search',
+        precompiled,
+        search: searchContext,
+        extraScripts: ['/js/search.js'],
+      };
+      let pageData = { search: params.search };
+      params.pageDataJSON = JSON.stringify(pageData);
+      callback(null, params);
+    })
+    .catch(callback);
+}
+
 router.get('/', (req, res, next) => {
   let query = req.query['query'];
-  if (!query) {
-    return res.redirect('/');
+  let useViewCache = req.app.enabled('view cache');
+  if (query) {
+    fetchWikipediaSearch(query, (err, results) => {
+      if (err) {
+        return next(err);
+      }
+      let searchContext = { query, results };
+      prepareViewParams(searchContext, useViewCache, (err, params) => {
+        if (err) {
+          return next(err);
+        }
+        res.render('search/index', params);
+      });
+    });
+  } else {
+    // No query, no search results
+    let searchContext = {};
+    prepareViewParams(searchContext, useViewCache, (err, params) => {
+      if (err) {
+        return next(err);
+      }
+      res.render('search/index', params);
+    });
   }
-  fetchWikipediaSearch(query, (err, results) => {
-    if (err) next(err);
-    let searchContext = { query, results };
-    expressHandlebars
-      .getPartials({ precompiled: true, cache: req.app.enabled('view cache') })
-      .then(precompiled => {
-        res.render('search/index', {
-          title: 'Search',
-          precompiled,
-          search: searchContext,
-          extraScripts: ['/js/search.js'],
-          initialDataPayload: JSON.stringify(searchContext),
-        });
-      })
-      .catch(next);
-  });
 });
 
 module.exports = router;
