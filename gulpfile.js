@@ -3,7 +3,7 @@ let nodemon = require('gulp-nodemon');
 let livereload = require('gulp-livereload');
 let plumber = require('gulp-plumber');
 
-gulp.task('livereload', () => {
+gulp.task('develop', () => {
   livereload.listen();
   nodemon({
     script: 'bin/www',
@@ -27,5 +27,4 @@ gulp.task('copy', () => {
     .pipe(gulp.dest('./public/js/vendor/'));
 });
 
-gulp.task('develop', ['copy', 'livereload']);
 gulp.task('default', ['develop']);
