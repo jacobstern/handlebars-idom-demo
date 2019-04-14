@@ -24,6 +24,11 @@
       {{/each}}
     }());
   </script>
+  <script>
+    {{#if initialDataPayload}}
+      window.initialData = {{{initialDataPayload}}};
+    {{/if}}
+  </script>
   {{#each extraScripts}}
     <script src="{{{this}}}"></script>
   {{/each}}

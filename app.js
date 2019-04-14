@@ -7,6 +7,7 @@ let bodyParser = require('body-parser');
 
 let expressHandlebars = require('./express-handlebars');
 
+let searchApiRoutes = require('./routes/api/search');
 let indexRoutes = require('./routes/index');
 let searchRoutes = require('./routes/search');
 
@@ -31,6 +32,7 @@ app.use(
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use('/api/search', searchApiRoutes);
 app.use('/', indexRoutes);
 app.use('/search', searchRoutes);
 
