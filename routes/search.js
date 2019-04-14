@@ -43,10 +43,11 @@ router.get('/', async (req, res, next) => {
     expressHandlebars
       .getPartials({ precompiled: true, cache: req.app.enabled('view cache') })
       .then(precompiled => {
-        res.render('search', {
+        res.render('search/index', {
           title: 'Search',
           precompiled,
           search: searchContext,
+          extraScripts: ['/js/search.js'],
         });
       })
       .catch(next);

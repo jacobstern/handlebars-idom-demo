@@ -24,5 +24,8 @@
       {{/each}}
     }());
   </script>
+  {{#each extraScripts}}
+    <script src="{{{this}}}"></script>
+  {{/each}}
 </body>
 </html>
