@@ -25,8 +25,8 @@
     }());
   </script>
   <script>
-    {{#if initialDataPayload}}
-      window.initialData = {{{initialDataPayload}}};
+    {{#if pageDataJSON}}
+      window.pageState = {{{pageDataJSON}}};
     {{/if}}
   </script>
   {{#each extraScripts}}

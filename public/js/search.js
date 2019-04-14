@@ -12,9 +12,6 @@
       : document.addEventListener('DOMContentLoaded', callback);
   }
 
-  var main, searchButton, searchInput;
-  var searchPartial = HandlebarsIdom.partials['search/index'];
-
   function getJSON(url, done) {
     var req = new XMLHttpRequest();
     req.overrideMimeType('application/json');
@@ -31,22 +28,23 @@
 
   function handleSearchButtonClick(event) {
     event.preventDefault();
+    var searchInput = document.getElementById('search-input');
     var query = searchInput.value;
     if (query) {
+      var searchButton = document.getElementById('search-button');
       searchButton.classList.add('is-loading');
       searchButton.disabled = true;
       var url = '/api/search?query=' + encodeURIComponent(query);
       getJSON(url, function(results) {
-        var searchContext = { query: query, results: results };
-        HandlebarsIdom.patch(
-          main,
-          searchPartial(searchContext, { backend: 'idom' })
-        );
         searchButton.disabled = false;
         searchButton.classList.remove('is-loading');
 
+        var searchContext = { query: query, results: results };
+        var pageState = { search: searchContext };
+        syncPageState(pageState);
+
         if (window.history) {
-          window.history.pushState(searchContext, '', '?query=' + query);
+          window.history.pushState(pageState, '', '?query=' + query);
         }
       });
     }
@@ -54,30 +52,30 @@
 
   function handlePopState(event) {
     if (event.state) {
-      HandlebarsIdom.patch(
-        main,
-        searchPartial(event.state, { backend: 'idom' })
-      );
+      syncPageState(event.state);
     } else {
       window.location.reload();
     }
   }
 
-  onReady(function() {
-    main = document.getElementById('main');
-
+  function syncPageState(state) {
+    var searchPartial = HandlebarsIdom.partials['search/index'];
     HandlebarsIdom.patch(
-      main,
-      searchPartial(window.initialData, { backend: 'idom' })
+      document.getElementById('main'),
+      searchPartial(state.search, { backend: 'idom' })
     );
+  }
 
-    searchButton = document.getElementById('search-button');
-    searchInput = document.getElementById('search-input');
-
+  onReady(function() {
+    var searchButton = document.getElementById('search-button');
     searchButton.addEventListener('click', handleSearchButtonClick);
 
+    // Retrieve the template state we passed to the client in `main.hbs`
+    var pageState = window.pageState;
+    syncPageState(pageState);
+
     if (window.history) {
-      window.history.replaceState(window.initialData, '');
+      window.history.replaceState(pageState, '');
       window.addEventListener('popstate', handlePopState);
     }
   });
