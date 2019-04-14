@@ -1,6 +1,8 @@
 let express = require('express');
 let https = require('https');
 
+let expressHandlebars = require('../express-handlebars');
+
 let router = express.Router();
 
 function transformOpenSearchData(data) {
@@ -38,7 +40,16 @@ router.get('/', async (req, res, next) => {
     if (err) next(err);
     let results = transformOpenSearchData(data);
     let searchContext = { query, results };
-    return res.render('search', { title: 'Search', search: searchContext });
+    expressHandlebars
+      .getPartials({ precompiled: true, cache: req.app.enabled('view cache') })
+      .then(precompiled => {
+        res.render('search', {
+          title: 'Search',
+          precompiled,
+          search: searchContext,
+        });
+      })
+      .catch(next);
   });
 });
 

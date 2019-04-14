@@ -4,8 +4,8 @@ let favicon = require('serve-favicon');
 let logger = require('morgan');
 let cookieParser = require('cookie-parser');
 let bodyParser = require('body-parser');
-let exphbs = require('express-handlebars');
-let HandlebarsIdom = require('handlebars-idom');
+
+let expressHandlebars = require('./express-handlebars');
 
 let indexRoutes = require('./routes/index');
 let searchRoutes = require('./routes/search');
@@ -16,16 +16,8 @@ let env = process.env.NODE_ENV || 'development';
 app.locals.ENV = env;
 app.locals.ENV_DEVELOPMENT = env == 'development';
 
-// view engine setup
+app.engine('hbs', expressHandlebars.engine);
 
-app.engine(
-  'hbs',
-  exphbs({
-    defaultLayout: 'main.hbs',
-    extname: '.hbs',
-    handlebars: HandlebarsIdom,
-  })
-);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
