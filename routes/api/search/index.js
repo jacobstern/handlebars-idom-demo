@@ -1,5 +1,5 @@
 let express = require('express');
-let { fetchWikipediaSearch } = require('../../../wikipedia-search');
+let { fetchWikipediaSearch } = require('../../../lib/wikipedia-search');
 
 let router = express.Router();
 

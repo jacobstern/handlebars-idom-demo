@@ -1,6 +1,6 @@
 let express = require('express');
 let expressHandlebars = require('../../express-handlebars');
-let { fetchWikipediaSearch } = require('../../wikipedia-search');
+let { fetchWikipediaSearch } = require('../../lib/wikipedia-search');
 
 let router = express.Router();
 
