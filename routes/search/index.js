@@ -1,20 +1,20 @@
-let express = require('express');
-let expressHandlebars = require('../../express-handlebars');
-let { fetchWikipediaSearch } = require('../../lib/wikipedia-search');
+const express = require('express');
+const expressHandlebars = require('../../express-handlebars');
+const { fetchWikipediaSearch } = require('../../lib/wikipedia-search');
 
-let router = express.Router();
+const router = express.Router();
 
 function prepareViewParams(searchContext, useViewCache, callback) {
   expressHandlebars
     .getPartials({ precompiled: true, cache: useViewCache })
     .then(precompiled => {
-      let params = {
+      const params = {
         title: 'Search',
         precompiled,
         search: searchContext,
         extraScripts: ['/js/search.js'],
       };
-      let pageData = { search: params.search };
+      const pageData = { search: params.search };
       params.pageDataJSON = JSON.stringify(pageData);
       callback(null, params);
     })
@@ -22,14 +22,14 @@ function prepareViewParams(searchContext, useViewCache, callback) {
 }
 
 router.get('/', (req, res, next) => {
-  let query = req.query['query'];
-  let useViewCache = req.app.enabled('view cache');
+  const query = req.query['query'];
+  const useViewCache = req.app.enabled('view cache');
   if (query) {
     fetchWikipediaSearch(query, (err, results) => {
       if (err) {
         return next(err);
       }
-      let searchContext = { query, results };
+      const searchContext = { query, results };
       prepareViewParams(searchContext, useViewCache, (err, params) => {
         if (err) {
           return next(err);
@@ -39,7 +39,7 @@ router.get('/', (req, res, next) => {
     });
   } else {
     // No query, no search results
-    let searchContext = {};
+    const searchContext = {};
     prepareViewParams(searchContext, useViewCache, (err, params) => {
       if (err) {
         return next(err);

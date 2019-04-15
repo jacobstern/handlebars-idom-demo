@@ -1,7 +1,7 @@
-let gulp = require('gulp');
-let nodemon = require('gulp-nodemon');
-let livereload = require('gulp-livereload');
-let plumber = require('gulp-plumber');
+const gulp = require('gulp');
+const nodemon = require('gulp-nodemon');
+const livereload = require('gulp-livereload');
+const plumber = require('gulp-plumber');
 
 gulp.task('livereload', () => {
   livereload.listen();

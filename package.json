@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node ./bin/www",
     "dev": "gulp",
+    "prettify": "prettier --write **/*.js **/*.json",
     "prepare": "gulp copy",
     "test": "mocha --recursive test",
     "test:coverage": "nyc npm test",
@@ -35,6 +36,7 @@
     "mocha": "^4.0.1",
     "npm-run-all": "^4.1.5",
     "nyc": "^10.0.0",
+    "prettier": "^1.17.0",
     "supertest": "^2.0.0"
   },
   "browserslist": [

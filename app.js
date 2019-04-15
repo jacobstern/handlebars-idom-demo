@@ -1,19 +1,19 @@
-let express = require('express');
-let path = require('path');
-let favicon = require('serve-favicon');
-let logger = require('morgan');
-let cookieParser = require('cookie-parser');
-let bodyParser = require('body-parser');
+const express = require('express');
+const path = require('path');
+const favicon = require('serve-favicon');
+const logger = require('morgan');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
 
-let expressHandlebars = require('./express-handlebars');
+const expressHandlebars = require('./express-handlebars');
 
-let searchApiRoutes = require('./routes/api/search');
-let indexRoutes = require('./routes/index');
-let searchRoutes = require('./routes/search');
+const searchApiRoutes = require('./routes/api/search');
+const indexRoutes = require('./routes/index');
+const searchRoutes = require('./routes/search');
 
-let app = express();
+const app = express();
 
-let env = process.env.NODE_ENV || 'development';
+const env = process.env.NODE_ENV || 'development';
 app.locals.ENV = env;
 app.locals.ENV_DEVELOPMENT = env == 'development';
 
@@ -38,7 +38,7 @@ app.use('/search', searchRoutes);
 
 /// catch 404 and forward to error handler
 app.use((req, res, next) => {
-  let err = new Error('Not Found');
+  const err = new Error('Not Found');
   err.status = 404;
   next(err);
 });

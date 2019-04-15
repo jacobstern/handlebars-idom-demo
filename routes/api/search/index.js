@@ -1,10 +1,10 @@
-let express = require('express');
-let { fetchWikipediaSearch } = require('../../../lib/wikipedia-search');
+const express = require('express');
+const { fetchWikipediaSearch } = require('../../../lib/wikipedia-search');
 
-let router = express.Router();
+const router = express.Router();
 
 router.get('/', (req, res, next) => {
-  let query = req.query['query'];
+  const query = req.query['query'];
   if (!query) {
     return res.status(400).json({ error: 'Missing query' });
   }
