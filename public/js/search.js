@@ -34,8 +34,9 @@
       var searchButton = document.getElementById('search-button');
       searchButton.classList.add('is-loading');
       searchButton.disabled = true;
-      var url = '/api/search?query=' + encodeURIComponent(query);
-      getJSON(url, function(results) {
+      var queryEncoded = encodeURIComponent(query);
+      var endpointURL = '/api/search?query=' + queryEncoded;
+      getJSON(endpointURL, function(results) {
         searchButton.disabled = false;
         searchButton.classList.remove('is-loading');
 
@@ -44,7 +45,7 @@
         syncPageState(pageState);
 
         if (window.history) {
-          window.history.pushState(pageState, '', '?query=' + query);
+          window.history.pushState(pageState, '', '?query=' + queryEncoded);
         }
       });
     }
