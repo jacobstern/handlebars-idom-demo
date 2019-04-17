@@ -67,12 +67,11 @@
   }
 
   onReady(function() {
-    var searchButton = document.getElementById('search-button');
-    searchButton.addEventListener('click', handleSearchButtonClick);
-
-    // Retrieve the template state we passed to the client in `main.hbs`
     var pageState = window.pageState;
     syncPageState(pageState);
+
+    var searchButton = document.getElementById('search-button');
+    searchButton.addEventListener('click', handleSearchButtonClick);
 
     if (window.history) {
       window.history.replaceState(pageState, '');

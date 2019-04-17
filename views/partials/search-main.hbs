@@ -1,6 +1,12 @@
 <section class="section">
   <div class="container" id="search-container">
-    <h1 class="title">Search Wikipedia Articles</h1>
+    <h1 class="title">
+      {{#if query}}
+        Results for <i>{{query}}</i>
+      {{else}}
+        Search Wikipedia Articles
+      {{/if}}
+    </h1>
     <form class="search-form" method="GET">
       <div class="field has-addons">
         <div class="control">
