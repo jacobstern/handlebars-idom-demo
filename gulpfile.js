@@ -20,12 +20,12 @@ gulp.task('livereload', () => {
   });
 });
 
-gulp.task('copy', () => {
+gulp.task('vendor', () => {
   return gulp
-    .src('./node_modules/handlebars-inc/dist/runtime.js')
+    .src('./node_modules/handlebars-inc/dist/handlebars-inc-runtime.min.js')
     .pipe(plumber())
     .pipe(gulp.dest('./public/js/vendor/'));
 });
 
-gulp.task('develop', ['copy', 'livereload']);
+gulp.task('develop', ['vendor', 'livereload']);
 gulp.task('default', ['develop']);
