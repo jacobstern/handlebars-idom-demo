@@ -22,7 +22,7 @@ gulp.task('livereload', () => {
 
 gulp.task('copy', () => {
   return gulp
-    .src('./node_modules/handlebars-idom/dist/runtime.js')
+    .src('./node_modules/handlebars-inc/dist/runtime.js')
     .pipe(plumber())
     .pipe(gulp.dest('./public/js/vendor/'));
 });

@@ -1,6 +1,6 @@
 'use strict';
 
-/* globals HandlebarsIdom */
+/* globals HandlebarsInc */
 
 (function() {
   /**
@@ -59,8 +59,8 @@
   }
 
   function syncPageState(state) {
-    var searchPartial = HandlebarsIdom.partials['search-main'];
-    HandlebarsIdom.patch(
+    var searchPartial = HandlebarsInc.partials['search-main'];
+    HandlebarsInc.patch(
       document.getElementById('main'),
       searchPartial(state.search, { backend: 'idom' })
     );

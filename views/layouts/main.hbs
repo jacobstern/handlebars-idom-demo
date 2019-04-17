@@ -17,8 +17,8 @@
   <script src="/js/vendor/runtime.js"></script>
   <script>
     (function () {
-      var partials = HandlebarsIdom.partials;
-      var template = HandlebarsIdom.template;
+      var partials = HandlebarsInc.partials;
+      var template = HandlebarsInc.template;
       {{#each precompiled}}
         partials['{{@key}}'] = template({{{this}}});
       {{/each}}

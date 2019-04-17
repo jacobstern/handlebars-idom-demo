@@ -1,11 +1,11 @@
 const path = require('path');
 const exphbs = require('express-handlebars');
-const HandlebarsIdom = require('handlebars-idom');
+const HandlebarsInc = require('handlebars-inc');
 
 const instance = exphbs.create({
   defaultLayout: 'main.hbs',
   extname: '.hbs',
-  handlebars: HandlebarsIdom,
+  handlebars: HandlebarsInc,
   partialsDir: path.resolve(__dirname, './views/partials'),
 });
 
