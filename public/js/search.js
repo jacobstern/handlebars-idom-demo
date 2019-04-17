@@ -59,7 +59,7 @@
   }
 
   function syncPageState(state) {
-    var searchPartial = HandlebarsIdom.partials['search/index'];
+    var searchPartial = HandlebarsIdom.partials['search-main'];
     HandlebarsIdom.patch(
       document.getElementById('main'),
       searchPartial(state.search, { backend: 'idom' })
