@@ -1,5 +1,5 @@
 {
-  "name": "demo-server",
+  "name": "handlebars-inc-demo",
   "version": "0.0.1",
   "private": true,
   "main": "app.js",
