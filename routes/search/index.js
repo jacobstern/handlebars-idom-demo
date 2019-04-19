@@ -12,7 +12,7 @@ function prepareViewParams(searchContext, useViewCache, callback) {
         title: 'Search',
         precompiled,
         search: searchContext,
-        extraScripts: ['/js/search.js'],
+        extraScripts: ['/js/search-page.js'],
       };
       const pageData = { search: params.search };
       params.pageDataJSON = JSON.stringify(pageData);
