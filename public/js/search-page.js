@@ -12,6 +12,19 @@
       : document.addEventListener('DOMContentLoaded', callback);
   }
 
+  function transformOpenSearchData(data) {
+    var titles = data[1];
+    var descriptions = data[2];
+    var urls = data[3];
+    return titles.map(function(title, i) {
+      return {
+        title: title,
+        description: descriptions[i],
+        url: urls[i],
+      };
+    });
+  }
+
   function getJSON(url, done) {
     var req = new XMLHttpRequest();
     req.overrideMimeType('application/json');
@@ -35,8 +48,12 @@
       searchButton.classList.add('is-loading');
       searchButton.disabled = true;
       var queryEncoded = encodeURIComponent(query);
-      var endpointURL = '/api/search?query=' + queryEncoded;
-      getJSON(endpointURL, function(results) {
+      var endpointURL =
+        'https://en.wikipedia.org/w/api.php?action=opensearch&origin=*&search=' +
+        queryEncoded;
+      getJSON(endpointURL, function(payload) {
+        var results = transformOpenSearchData(payload);
+
         searchButton.disabled = false;
         searchButton.classList.remove('is-loading');
 

@@ -2,7 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 
-router.get('/', async (_req, res) => {
+router.get('/', (_req, res) => {
   res.redirect('/search');
 });
 
