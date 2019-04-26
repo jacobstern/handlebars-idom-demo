@@ -4,14 +4,10 @@
   "private": true,
   "main": "app.js",
   "scripts": {
+    "assets": "parcel build assets/js/search-page.js --out-dir public/bundle/",
     "start": "node ./bin/www",
     "dev": "node ./scripts/dev.js",
     "prettify": "prettier --write **/*.js **/*.json",
-    "prepare": "gulp vendor",
-    "test": "mocha --recursive test",
-    "test:coverage": "nyc npm test",
-    "test:unit": "mocha --recursive test/middleware test/models test/routes",
-    "test:integration": "mocha --recursive test/integration",
     "lint": "eslint ."
   },
   "dependencies": {
@@ -19,27 +15,19 @@
     "cookie-parser": "^1.3.3",
     "express": "^4.13.3",
     "express-handlebars": "^3.0.0",
-    "handlebars-inc": "0.0.2",
+    "handlebars-inc": "github:jacobstern/handlebars-inc#09be9141975b0b9d4f468ce1c0a8ec29dabd5c00",
     "morgan": "^1.6.1",
     "node-fetch": "^2.3.0",
     "serve-favicon": "^2.3.0"
   },
   "devDependencies": {
-    "chai": "^3.5.0",
     "debug": "^2.2.0",
     "eslint": "^5.16.0",
     "eslint-plugin-compat": "^3.1.1",
-    "gulp": "^3.9.0",
-    "gulp-livereload": "^3.8.0",
-    "gulp-nodemon": "^2.0.2",
-    "gulp-plumber": "^1.0.0",
     "livereload": "^0.7.0",
-    "mocha": "^4.0.1",
     "nodemon": "^1.18.11",
-    "npm-run-all": "^4.1.5",
-    "nyc": "^10.0.0",
-    "prettier": "^1.17.0",
-    "supertest": "^2.0.0"
+    "parcel-bundler": "^1.12.3",
+    "prettier": "^1.17.0"
   },
   "browserslist": [
     "last 1 version",

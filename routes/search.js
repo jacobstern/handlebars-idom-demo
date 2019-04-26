@@ -1,6 +1,6 @@
 const express = require('express');
 const https = require('https');
-const expressHandlebars = require('../../express-handlebars');
+const expressHandlebars = require('../express-handlebars');
 
 function transformOpenSearchData(data) {
   const [titles, descriptions, urls] = data.slice(1);
@@ -39,7 +39,7 @@ function prepareViewParams(searchContext, useViewCache, callback) {
         title: 'Search',
         precompiled,
         search: searchContext,
-        extraScripts: ['/js/search-page.js'],
+        extraScripts: ['/build/search-page.js'],
       };
       const pageData = { search: params.search };
       params.pageDataJSON = JSON.stringify(pageData);
@@ -61,7 +61,7 @@ router.get('/', (req, res, next) => {
         if (err) {
           return next(err);
         }
-        res.render('search/index', params);
+        res.render('search', params);
       });
     });
   } else {
@@ -71,7 +71,7 @@ router.get('/', (req, res, next) => {
       if (err) {
         return next(err);
       }
-      res.render('search/index', params);
+      res.render('search', params);
     });
   }
 });

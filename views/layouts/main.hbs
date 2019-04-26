@@ -14,13 +14,11 @@
 
   {{{body}}}
 
-  <script src="/js/vendor/handlebars-inc-runtime.min.js"></script>
   <script>
     (function () {
-      var partials = HandlebarsInc.partials;
-      var template = HandlebarsInc.template;
+      var partials = window.precompiledPartials = {};
       {{#each precompiled}}
-        partials['{{@key}}'] = template({{{this}}});
+        partials['{{@key}}'] = {{{this}}};
       {{/each}}
     }());
   </script>

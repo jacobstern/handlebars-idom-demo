@@ -1,4 +1,8 @@
 node_modules/
 npm-debug.log
 
-public/js/vendor/
+# Parcel cache
+.cache/
+
+# Assets build output
+public/build/
