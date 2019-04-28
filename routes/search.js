@@ -35,14 +35,14 @@ function prepareViewParams(searchContext, useViewCache, callback) {
   expressHandlebars
     .getPartials({ precompiled: true, cache: useViewCache })
     .then(precompiled => {
+      const initialPageState = { search: searchContext };
       const params = {
         title: 'Search',
         precompiled,
         search: searchContext,
         extraScripts: ['/build/search-page.js'],
+        pageStateJSON: JSON.stringify(initialPageState),
       };
-      const pageData = { search: params.search };
-      params.pageDataJSON = JSON.stringify(pageData);
       callback(null, params);
     })
     .catch(callback);

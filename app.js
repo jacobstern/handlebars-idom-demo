@@ -7,7 +7,6 @@ const bodyParser = require('body-parser');
 
 const expressHandlebars = require('./express-handlebars');
 
-const indexRoutes = require('./routes/index');
 const searchRoutes = require('./routes/search');
 
 const app = express();
@@ -31,7 +30,8 @@ app.use(
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRoutes);
+// Index page serves up Wikipedia search UX as well as /search
+app.use('/', searchRoutes);
 app.use('/search', searchRoutes);
 
 /// catch 404 and forward to error handler

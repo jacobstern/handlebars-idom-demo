@@ -10,12 +10,10 @@ function onReady(callback) {
 }
 
 function transformOpenSearchData(data) {
-  var titles = data[1];
-  var descriptions = data[2];
-  var urls = data[3];
-  return titles.map(function(title, i) {
+  const [titles, descriptions, urls] = data.slice(1);
+  return titles.map((title, i) => {
     return {
-      title: title,
+      title,
       description: descriptions[i],
       url: urls[i],
     };
@@ -23,7 +21,7 @@ function transformOpenSearchData(data) {
 }
 
 function getJSON(url, done) {
-  var req = new XMLHttpRequest();
+  const req = new XMLHttpRequest();
   req.overrideMimeType('application/json');
   req.open('GET', url);
   req.addEventListener('load', function() {
@@ -38,28 +36,32 @@ function getJSON(url, done) {
 
 function handleSearchButtonClick(event) {
   event.preventDefault();
-  var searchInput = document.getElementById('search-input');
-  var query = searchInput.value;
+  const searchInput = document.getElementById('search-input');
+  const query = searchInput.value;
   if (query) {
-    var searchButton = document.getElementById('search-button');
+    const searchButton = document.getElementById('search-button');
     searchButton.classList.add('is-loading');
     searchButton.disabled = true;
-    var queryEncoded = encodeURIComponent(query);
-    var endpointURL =
+    const queryEncoded = encodeURIComponent(query);
+    const endpointURL =
       'https://en.wikipedia.org/w/api.php?action=opensearch&origin=*&search=' +
       queryEncoded;
-    getJSON(endpointURL, function(payload) {
-      var results = transformOpenSearchData(payload);
+    getJSON(endpointURL, payload => {
+      const results = transformOpenSearchData(payload);
 
       searchButton.disabled = false;
       searchButton.classList.remove('is-loading');
 
-      var searchContext = { query: query, results: results };
-      var pageState = { search: searchContext };
+      const searchContext = { query: query, results: results };
+      const pageState = { search: searchContext };
       syncPageState(pageState);
 
       if (window.history) {
-        window.history.pushState(pageState, '', '?query=' + queryEncoded);
+        window.history.pushState(
+          pageState,
+          '',
+          '/search?query=' + queryEncoded
+        );
       }
     });
   }
@@ -67,34 +69,37 @@ function handleSearchButtonClick(event) {
 
 function handlePopState(event) {
   if (event.state) {
+    // We have saved state for this URL, just update the UI with incremental-dom
     syncPageState(event.state);
   } else {
+    // No saved state, need to load this page from the server
     window.location.reload();
   }
 }
 
+function initPartials() {
+  const precompiledPartials = window.HandlebarsIncDemo.precompiledPartials;
+  for (const partial in precompiledPartials) {
+    const precompiled = precompiledPartials[partial];
+    HandlebarsInc.partials[partial] = HandlebarsInc.template(precompiled);
+  }
+}
+
 function syncPageState(state) {
-  var searchPartial = HandlebarsInc.partials['search-main'];
+  const searchPartial = HandlebarsInc.partials['search-main'];
   HandlebarsInc.patch(
     document.getElementById('main'),
     searchPartial(state.search, { backend: 'idom' })
   );
 }
 
-function initPartials(handlebars) {
-  for (const partial in window.precompiledPartials) {
-    const precompiled = window.precompiledPartials[partial];
-    handlebars.partials[partial] = handlebars.template(precompiled);
-  }
-}
+onReady(() => {
+  initPartials();
 
-onReady(function() {
-  initPartials(HandlebarsInc);
-
-  var pageState = window.pageState;
+  const pageState = window.HandlebarsIncDemo.initialPageState;
   syncPageState(pageState);
 
-  var searchButton = document.getElementById('search-button');
+  const searchButton = document.getElementById('search-button');
   searchButton.addEventListener('click', handleSearchButtonClick);
 
   if (window.history) {

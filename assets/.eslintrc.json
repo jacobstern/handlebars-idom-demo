@@ -1,15 +1,10 @@
 {
-  "extends": ["eslint:recommended", "plugin:compat/recommended"],
+  "extends": ["../.eslintrc.json", "plugin:compat/recommended"],
   "env": {
     "browser": true
   },
   "parserOptions": {
     "sourceType": "module",
-    "ecmaVersion": 5
-  },
-  "rules": {
-    "no-console": "warn",
-    "no-shadow": "warn",
-    "no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }]
+    "ecmaVersion": 9
   }
 }

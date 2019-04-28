@@ -15,16 +15,15 @@
   {{{body}}}
 
   <script>
-    (function () {
-      var partials = window.precompiledPartials = {};
-      {{#each precompiled}}
-        partials['{{@key}}'] = {{{this}}};
-      {{/each}}
-    }());
-  </script>
-  <script>
-    {{#if pageDataJSON}}
-      window.pageState = {{{pageDataJSON}}};
+    // Populate precompiled templates and initial page state passed in from the router
+    window.HandlebarsIncDemo = window.HandlebarsIncDemo || {};
+
+    window.HandlebarsIncDemo.precompiledPartials = {};
+    {{#each precompiled}}
+    window.HandlebarsIncDemo.precompiledPartials['{{@key}}'] = {{{this}}};
+    {{/each}}
+    {{#if pageStateJSON}}
+    window.HandlebarsIncDemo.initialPageState = {{{pageStateJSON}}};
     {{/if}}
   </script>
   {{#each extraScripts}}
