@@ -2,8 +2,13 @@
 <li class="media" data-idom-key="{{url}}">
   <div class="content media-content">
     <p>
-      <a href="{{url}}">{{title}}</a>
+      <a href="/search/external?pageid={{pageid}}">
+        {{title}}
+      </a>
     </p>
-    <p class="search-result-description">{{description}}</p>
+    <p class="search-result-snippet">
+      {{!-- The `idomVerbatim` helper allows us to insert raw HTML --}}
+      {{ idomVerbatim snippet }}
+    </p>
   </div>
 </li>

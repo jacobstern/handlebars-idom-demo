@@ -13,17 +13,6 @@ function onReady(callback) {
     : document.addEventListener('DOMContentLoaded', callback);
 }
 
-function transformOpenSearchData(data) {
-  const [titles, descriptions, urls] = data.slice(1);
-  return titles.map((title, i) => {
-    return {
-      title,
-      description: descriptions[i],
-      url: urls[i],
-    };
-  });
-}
-
 function getJSON(url, done) {
   const req = new XMLHttpRequest();
   req.overrideMimeType('application/json');
@@ -47,9 +36,9 @@ function handleSearchButtonClick(event) {
     searchButton.classList.add('is-loading');
     searchButton.disabled = true;
     const queryEncoded = encodeURIComponent(query);
-    const endpointURL = `https://en.wikipedia.org/w/api.php?action=opensearch&origin=*&search=${queryEncoded}`;
+    const endpointURL = `https://en.wikipedia.org/w/api.php?action=query&format=json&list=search&origin=*&srsearch=${queryEncoded}`;
     getJSON(endpointURL, payload => {
-      const results = transformOpenSearchData(payload);
+      const results = payload.query.search;
 
       searchButton.disabled = false;
       searchButton.classList.remove('is-loading');
@@ -83,6 +72,10 @@ function initHandlebarsHelpers(handlebars) {
   registerVerbatimHelper(handlebars);
 }
 
+/**
+ * Initialize the handlebars instance with precompiled partials installed on the
+ * global scope by the server.
+ */
 function initPartials(handlebars) {
   const precompiledPartials = window.HandlebarsIncDemo.precompiledPartials;
   for (const partial in precompiledPartials) {
@@ -91,6 +84,13 @@ function initPartials(handlebars) {
   }
 }
 
+/**
+ * Using `handlebars-inc`, update the page with the search data from the server
+ * or from the `popstate` event. This is equivalent to rendering the page
+ * template on the server.
+ * @param handlebars - A configured `handlebars-inc` instance.
+ * @param state - Context to populate the `search-main.hbs` partial.
+ */
 function syncPageState(handlebars, state) {
   const searchPartial = handlebars.partials['search-main'];
   handlebars.patch(
@@ -103,14 +103,14 @@ onReady(() => {
   initHandlebarsHelpers(handlebarsInstance);
   initPartials(handlebarsInstance);
 
-  const pageState = window.HandlebarsIncDemo.initialPageState;
-  syncPageState(handlebarsInstance, pageState);
+  const initialState = window.HandlebarsIncDemo.initialPageState;
+  syncPageState(handlebarsInstance, initialState);
 
   const searchButton = document.getElementById('search-button');
   searchButton.addEventListener('click', handleSearchButtonClick);
 
   if (window.history) {
-    window.history.replaceState(pageState, '');
+    window.history.replaceState(initialState, '');
     window.addEventListener('popstate', handlePopState);
   }
 });
