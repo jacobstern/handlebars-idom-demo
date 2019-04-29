@@ -5,6 +5,7 @@
   "main": "app.js",
   "scripts": {
     "assets": "parcel build assets/js/search-page.js --out-dir public/bundle/",
+    "prestart": "npm run assets",
     "start": "node ./bin/www",
     "dev": "node ./scripts/dev.js",
     "prettify": "prettier --write **/*.js **/*.json",
@@ -16,6 +17,7 @@
     "express": "^4.13.3",
     "express-handlebars": "^3.0.0",
     "handlebars-inc": "github:jacobstern/handlebars-inc#09be9141975b0b9d4f468ce1c0a8ec29dabd5c00",
+    "handlebars-inc-verbatim": "github:jacobstern/handlebars-inc-verbatim#e85eec310c79f82123934bbbada959dccd4da593",
     "morgan": "^1.6.1",
     "node-fetch": "^2.3.0",
     "serve-favicon": "^2.3.0"

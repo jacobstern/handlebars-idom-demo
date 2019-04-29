@@ -1,4 +1,8 @@
 import HandlebarsInc from 'handlebars-inc/runtime';
+import registerVerbatimHelper from 'handlebars-inc-verbatim';
+
+// Global handlebars-inc instance is shared by event handlers
+const handlebarsInstance = HandlebarsInc.create();
 
 /**
  * Analogue of `jQuery.ready()` for IE9 and beyond.
@@ -43,9 +47,7 @@ function handleSearchButtonClick(event) {
     searchButton.classList.add('is-loading');
     searchButton.disabled = true;
     const queryEncoded = encodeURIComponent(query);
-    const endpointURL =
-      'https://en.wikipedia.org/w/api.php?action=opensearch&origin=*&search=' +
-      queryEncoded;
+    const endpointURL = `https://en.wikipedia.org/w/api.php?action=opensearch&origin=*&search=${queryEncoded}`;
     getJSON(endpointURL, payload => {
       const results = transformOpenSearchData(payload);
 
@@ -54,13 +56,13 @@ function handleSearchButtonClick(event) {
 
       const searchContext = { query: query, results: results };
       const pageState = { search: searchContext };
-      syncPageState(pageState);
+      syncPageState(handlebarsInstance, pageState);
 
       if (window.history) {
         window.history.pushState(
           pageState,
           '',
-          '/search?query=' + queryEncoded
+          `/search?query=${queryEncoded}`
         );
       }
     });
@@ -70,34 +72,39 @@ function handleSearchButtonClick(event) {
 function handlePopState(event) {
   if (event.state) {
     // We have saved state for this URL, just update the UI with incremental-dom
-    syncPageState(event.state);
+    syncPageState(handlebarsInstance, event.state);
   } else {
     // No saved state, need to load this page from the server
     window.location.reload();
   }
 }
 
-function initPartials() {
+function initHandlebarsHelpers(handlebars) {
+  registerVerbatimHelper(handlebars);
+}
+
+function initPartials(handlebars) {
   const precompiledPartials = window.HandlebarsIncDemo.precompiledPartials;
   for (const partial in precompiledPartials) {
     const precompiled = precompiledPartials[partial];
-    HandlebarsInc.partials[partial] = HandlebarsInc.template(precompiled);
+    handlebars.partials[partial] = handlebars.template(precompiled);
   }
 }
 
-function syncPageState(state) {
-  const searchPartial = HandlebarsInc.partials['search-main'];
-  HandlebarsInc.patch(
+function syncPageState(handlebars, state) {
+  const searchPartial = handlebars.partials['search-main'];
+  handlebars.patch(
     document.getElementById('main'),
     searchPartial(state.search, { backend: 'idom' })
   );
 }
 
 onReady(() => {
-  initPartials();
+  initHandlebarsHelpers(handlebarsInstance);
+  initPartials(handlebarsInstance);
 
   const pageState = window.HandlebarsIncDemo.initialPageState;
-  syncPageState(pageState);
+  syncPageState(handlebarsInstance, pageState);
 
   const searchButton = document.getElementById('search-button');
   searchButton.addEventListener('click', handleSearchButtonClick);
